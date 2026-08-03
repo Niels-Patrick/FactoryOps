@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: FactoryOps
+
+  profiles:
+    active: dev
