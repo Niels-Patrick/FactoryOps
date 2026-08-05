@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/factoryops
-    username: factoryops_crud
+    username: postgres
     password: fG57dNB@WOe17)t
     driver-class-name: org.postgresql.Driver
 

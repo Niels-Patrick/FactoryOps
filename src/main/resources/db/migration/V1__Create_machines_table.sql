@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS machines (
+	id UUID PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	serial_number VARCHAR(100) NOT NULL UNIQUE,
+	manufacturer VARCHAR(100) NOT NULL,
+	production_line VARCHAR(100) NOT NULL,
+	installation_date DATE NOT NULL,
+	status VARCHAR(30) NOT NULL DEFAULT 'STOPPED',
+	operating_hours INTEGER NOT NULL DEFAULT 0
+);

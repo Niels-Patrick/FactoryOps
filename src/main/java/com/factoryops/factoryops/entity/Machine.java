@@ -83,11 +83,11 @@ public class Machine {
 		this.productionLine = productionLine;
 	}
 
-	public String getInstallationDate() {
+	public LocalDate getInstallationDate() {
 		return installationDate;
 	}
 
-	public void setInstallationDate(String installationDate) {
+	public void setInstallationDate(LocalDate installationDate) {
 		this.installationDate = installationDate;
 	}
 
