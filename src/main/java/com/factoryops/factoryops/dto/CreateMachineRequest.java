@@ -10,29 +10,41 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class CreateMachineRequest {
-	@NotBlank
-	@Size(max = 100)
+	@NotBlank(message = "Machine name is required")
+	@Size(
+			max = 100,
+			message = "Machine name cannot exceed 100 characters"
+			)
 	private String name;
 	
-	@NotBlank
-	@Size(max = 100)
+	@NotBlank(message = "Machine serial number is required")
+	@Size(
+			max = 100,
+			message = "Machine serial number cannot exceed 100 characters"
+			)
 	private String serialNumber;
 	
-	@NotBlank
-	@Size(max = 100)
+	@NotBlank(message = "Machine manufacturer  is required")
+	@Size(
+			max = 100,
+			message = "Machine manufacturer cannot exceed 100 characters"
+			)
 	private String manufacturer;
 	
-	@NotBlank
-	@Size(max = 100)
+	@NotBlank(message = "Machine production line is required")
+	@Size(
+			max = 100,
+			message = "Machine production line cannot exceed 100 characters"
+			)
 	private String productionLine;
 	
-	@NotNull
+	@NotNull(message = "Machine installation date is required")
 	private LocalDate installationDate;
 	
-	@NotNull
+	@NotNull(message = "Machine status is required")
 	private MachineStatus status;
 	
-	@NotNull
+	@NotNull(message = "Machine operating hours is required")
 	@Min(0)
 	private Integer operatingHours;
 	
