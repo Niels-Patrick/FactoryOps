@@ -40,4 +40,20 @@ public class GlobalExceptionHandler {
 				.status(HttpStatus.BAD_REQUEST)
 				.body(response);
 	}
+	
+	@ExceptionHandler(MachineNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleMachineNotFoundException(
+			MachineNotFoundException exception
+			) {
+		ErrorResponse response = new ErrorResponse(
+				HttpStatus.NOT_FOUND.value(),
+				exception.getMessage(),
+				LocalDateTime.now(),
+				null
+				);
+		
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(response);
+	}
 }

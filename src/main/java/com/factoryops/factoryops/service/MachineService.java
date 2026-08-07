@@ -6,6 +6,9 @@ import com.factoryops.factoryops.repository.MachineRepository;
 import com.factoryops.factoryops.dto.CreateMachineRequest;
 import com.factoryops.factoryops.dto.MachineResponse;
 import com.factoryops.factoryops.entity.Machine;
+import com.factoryops.factoryops.exception.MachineNotFoundException;
+
+import java.util.UUID;
 
 @Service
 public class MachineService {
@@ -29,16 +32,27 @@ public class MachineService {
 		
 		Machine savedMachine = machineRepository.save(machine);
 		
+		return mapToResponse(savedMachine);
+	}
+	
+	public MachineResponse getMachineById(UUID id) {
+		Machine machine = machineRepository.findById(id)
+				.orElseThrow(() -> new MachineNotFoundException(id));
+		
+		return mapToResponse(machine);
+	}
+	
+	private MachineResponse mapToResponse(Machine machine) {
 		MachineResponse response = new MachineResponse();
 		
-		response.setId(savedMachine.getId());
-		response.setName(savedMachine.getName());
-		response.setSerialNumber(savedMachine.getSerialNumber());
-		response.setManufacturer(savedMachine.getManufacturer());
-		response.setProductionLine(savedMachine.getProductionLine());
-		response.setInstallationDate(savedMachine.getInstallationDate());
-		response.setStatus(savedMachine.getStatus());
-		response.setOperatingHours(savedMachine.getOperatingHours());
+		response.setId(machine.getId());
+		response.setName(machine.getName());
+		response.setSerialNumber(machine.getSerialNumber());
+		response.setManufacturer(machine.getManufacturer());
+		response.setProductionLine(machine.getProductionLine());
+		response.setInstallationDate(machine.getInstallationDate());
+		response.setStatus(machine.getStatus());
+		response.setOperatingHours(machine.getOperatingHours());
 		
 		return response;
 	}

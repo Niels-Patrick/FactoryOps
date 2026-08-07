@@ -8,6 +8,8 @@ import com.factoryops.factoryops.dto.CreateMachineRequest;
 import com.factoryops.factoryops.dto.MachineResponse;
 import com.factoryops.factoryops.service.MachineService;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/machines")
 public class MachineController {
@@ -23,5 +25,10 @@ public class MachineController {
 			@Valid @RequestBody CreateMachineRequest request
 			) {
 		return machineService.createMachine(request);
+	}
+	
+	@GetMapping("/{id}")
+	public MachineResponse getMachineById(@PathVariable UUID id) {
+		return machineService.getMachineById(id);
 	}
 }
