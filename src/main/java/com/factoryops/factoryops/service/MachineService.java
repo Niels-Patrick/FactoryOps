@@ -1,6 +1,8 @@
 package com.factoryops.factoryops.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.factoryops.factoryops.repository.MachineRepository;
 import com.factoryops.factoryops.dto.CreateMachineRequest;
@@ -40,6 +42,12 @@ public class MachineService {
 				.orElseThrow(() -> new MachineNotFoundException(id));
 		
 		return mapToResponse(machine);
+	}
+	
+	public Page<MachineResponse> getMachines(Pageable pageable) {
+		Page<Machine> machines = machineRepository.findAll(pageable);
+		
+		return machines.map(this::mapToResponse);
 	}
 	
 	private MachineResponse mapToResponse(Machine machine) {

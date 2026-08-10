@@ -1,6 +1,8 @@
 package com.factoryops.factoryops.controller;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import jakarta.validation.Valid;
 
@@ -30,5 +32,10 @@ public class MachineController {
 	@GetMapping("/{id}")
 	public MachineResponse getMachineById(@PathVariable UUID id) {
 		return machineService.getMachineById(id);
+	}
+	
+	@GetMapping
+	public Page<MachineResponse> getMachines(Pageable pageable) {
+		return machineService.getMachines(pageable);
 	}
 }
