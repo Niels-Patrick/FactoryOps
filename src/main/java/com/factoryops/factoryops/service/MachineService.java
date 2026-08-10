@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.factoryops.factoryops.repository.MachineRepository;
 import com.factoryops.factoryops.dto.CreateMachineRequest;
+import com.factoryops.factoryops.dto.UpdateMachineRequest;
 import com.factoryops.factoryops.dto.MachineResponse;
 import com.factoryops.factoryops.entity.Machine;
 import com.factoryops.factoryops.exception.MachineNotFoundException;
@@ -48,6 +49,33 @@ public class MachineService {
 		Page<Machine> machines = machineRepository.findAll(pageable);
 		
 		return machines.map(this::mapToResponse);
+	}
+	
+	public MachineResponse updateMachine(
+			UUID id,
+			UpdateMachineRequest request
+			) {
+		Machine machine = machineRepository.findById(id)
+				.orElseThrow(() -> new MachineNotFoundException(id));
+		
+		machine.setName(request.getName());
+		machine.setSerialNumber(request.getSerialNumber());
+		machine.setManufacturer(request.getManufacturer());
+		machine.setProductionLine(request.getProductionLine());
+		machine.setInstallationDate(request.getInstallationDate());
+		machine.setStatus(request.getStatus());
+		machine.setOperatingHours(request.getOperatingHours());
+		
+		Machine updatedMachine = machineRepository.save(machine);
+		
+		return mapToResponse(updatedMachine);
+	}
+	
+	public void deleteMachine(UUID id) {
+		Machine machine = machineRepository.findById(id)
+				.orElseThrow(() -> new MachineNotFoundException(id));
+		
+		machineRepository.delete(machine);
 	}
 	
 	private MachineResponse mapToResponse(Machine machine) {
