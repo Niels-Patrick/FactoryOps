@@ -10,6 +10,7 @@ import com.factoryops.factoryops.dto.MaintenanceResponse;
 import com.factoryops.factoryops.service.MaintenanceService;
 
 import java.util.UUID;
+import java.util.List;
 import java.net.URI;
 
 @RestController
@@ -30,12 +31,20 @@ public class MaintenanceController {
 			@PathVariable UUID machineId,
 			@Valid @RequestBody CreateMaintenanceRequest request
 			) {
-		MaintenanceResponse response = maintenanceService.createMaintenance(machineId, request);
+		MaintenanceResponse response = maintenanceService
+				.createMaintenance(machineId, request);
 		
 		URI location = URI.create("/api/maintenances/" + response.getId());
 		
 		return ResponseEntity
 				.created(location)
 				.body(response);
+	}
+	
+	@GetMapping
+	public List<MaintenanceResponse> getMaintenancesByMachine(
+			@PathVariable UUID machineId
+			) {
+		return maintenanceService.getMaintenancesByMachine(machineId);
 	}
 }

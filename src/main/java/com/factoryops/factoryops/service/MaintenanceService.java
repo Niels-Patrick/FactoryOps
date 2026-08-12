@@ -11,6 +11,7 @@ import com.factoryops.factoryops.entity.Maintenance;
 import com.factoryops.factoryops.exception.MachineNotFoundException;
 
 import java.util.UUID;
+import java.util.List;
 
 @Service
 public class MaintenanceService {
@@ -49,6 +50,17 @@ public class MaintenanceService {
 		Maintenance savedMaintenance = maintenanceRepository.save(maintenance);
 		
 		return mapToResponse(savedMaintenance);
+	}
+	
+	public List<MaintenanceResponse> getMaintenancesByMachine(UUID machineId) {
+		machineRepository.findById(machineId)
+			.orElseThrow(() -> new MachineNotFoundException(machineId));
+		
+		List<Maintenance> maintenances = maintenanceRepository.findByMachineId(machineId);
+		
+		return maintenances.stream()
+				.map(this::mapToResponse)
+				.toList();
 	}
 	
 	
