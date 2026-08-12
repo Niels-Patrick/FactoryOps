@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.factoryops.factoryops.entity.enums.MachineStatus;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "machines")
@@ -33,6 +34,7 @@ public class Machine {
 	@Enumerated(EnumType.STRING)
 	private MachineStatus status;
 	
+	@Min(0)
 	@Column(nullable = false)
 	private Integer operatingHours;
 	

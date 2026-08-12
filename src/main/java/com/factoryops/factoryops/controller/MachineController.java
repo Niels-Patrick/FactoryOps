@@ -19,13 +19,17 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/machines")
 public class MachineController {
+	// Properties
 	private final MachineService machineService;
 	
+	
+	// Constructor
 	public MachineController(MachineService machineService) {
 		this.machineService = machineService;
 	}
 	
 	
+	// Routes
 	@PostMapping
 	public ResponseEntity<MachineResponse> createMachine(
 			@Valid @RequestBody CreateMachineRequest request

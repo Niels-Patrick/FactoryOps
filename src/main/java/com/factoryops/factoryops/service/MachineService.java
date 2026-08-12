@@ -15,13 +15,17 @@ import java.util.UUID;
 
 @Service
 public class MachineService {
+	// Properties
 	private final MachineRepository machineRepository;
 	
+	
+	// Constructor
 	public MachineService(MachineRepository machineRepository) {
 		this.machineRepository = machineRepository;
 	}
 	
 	
+	// Public methods
 	public MachineResponse createMachine(CreateMachineRequest request) {
 		Machine machine = new Machine();
 		
@@ -78,6 +82,8 @@ public class MachineService {
 		machineRepository.delete(machine);
 	}
 	
+	
+	// Private methods
 	private MachineResponse mapToResponse(Machine machine) {
 		MachineResponse response = new MachineResponse();
 		
