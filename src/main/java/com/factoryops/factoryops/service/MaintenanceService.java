@@ -1,17 +1,20 @@
 package com.factoryops.factoryops.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.factoryops.factoryops.repository.MachineRepository;
 import com.factoryops.factoryops.repository.MaintenanceRepository;
 import com.factoryops.factoryops.dto.CreateMaintenanceRequest;
+import com.factoryops.factoryops.dto.UpdateMaintenanceRequest;
 import com.factoryops.factoryops.dto.MaintenanceResponse;
 import com.factoryops.factoryops.entity.Machine;
 import com.factoryops.factoryops.entity.Maintenance;
 import com.factoryops.factoryops.exception.MachineNotFoundException;
+import com.factoryops.factoryops.exception.MaintenanceNotFoundException;
 
 import java.util.UUID;
-import java.util.List;
 
 @Service
 public class MaintenanceService {
@@ -52,15 +55,49 @@ public class MaintenanceService {
 		return mapToResponse(savedMaintenance);
 	}
 	
-	public List<MaintenanceResponse> getMaintenancesByMachine(UUID machineId) {
+	public Page<MaintenanceResponse> getMaintenancesByMachine(
+			UUID machineId,
+			Pageable pageable
+			) {
 		machineRepository.findById(machineId)
 			.orElseThrow(() -> new MachineNotFoundException(machineId));
 		
-		List<Maintenance> maintenances = maintenanceRepository.findByMachineId(machineId);
+		Page<Maintenance> maintenances = maintenanceRepository
+				.findByMachineId(machineId, pageable);
 		
-		return maintenances.stream()
-				.map(this::mapToResponse)
-				.toList();
+		return maintenances.map(this::mapToResponse);
+	}
+	
+	public MaintenanceResponse getMaintenance(UUID id) {
+		Maintenance maintenance = maintenanceRepository.findById(id)
+				.orElseThrow(() -> new MaintenanceNotFoundException(id));
+		
+		return mapToResponse(maintenance);
+	}
+	
+	public MaintenanceResponse updateMaintenance(
+			UUID id,
+			UpdateMaintenanceRequest request
+			) {
+		Maintenance maintenance = maintenanceRepository.findById(id)
+				.orElseThrow(() -> new MaintenanceNotFoundException(id));
+		
+		maintenance.setMaintenanceDate(request.getMaintenanceDate());
+		maintenance.setTechnician(request.getTechnician());
+		maintenance.setDurationHours(request.getDurationHours());
+		maintenance.setMaintenanceType(request.getMaintenanceType());
+		maintenance.setDescription(request.getDescription());
+		
+		Maintenance updatedMaintenance = maintenanceRepository.save(maintenance);
+		
+		return mapToResponse(updatedMaintenance);
+	}
+	
+	public void deleteMaintenance(UUID id) {
+		Maintenance maintenance = maintenanceRepository.findById(id)
+				.orElseThrow(() -> new MaintenanceNotFoundException(id));
+		
+		maintenanceRepository.delete(maintenance);
 	}
 	
 	

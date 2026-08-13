@@ -2,6 +2,10 @@ package com.factoryops.factoryops.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 import jakarta.validation.Valid;
 
@@ -10,7 +14,6 @@ import com.factoryops.factoryops.dto.MaintenanceResponse;
 import com.factoryops.factoryops.service.MaintenanceService;
 
 import java.util.UUID;
-import java.util.List;
 import java.net.URI;
 
 @RestController
@@ -42,9 +45,17 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping
-	public List<MaintenanceResponse> getMaintenancesByMachine(
-			@PathVariable UUID machineId
+	public Page<MaintenanceResponse> getMaintenancesByMachine(
+			@PathVariable UUID machineId,
+			@PageableDefault(
+					size = 10,
+					sort = "maintenanceDate",
+					direction = Sort.Direction.DESC
+					) Pageable pageable
 			) {
-		return maintenanceService.getMaintenancesByMachine(machineId);
+		return maintenanceService.getMaintenancesByMachine(
+				machineId,
+				pageable
+				);
 	}
 }

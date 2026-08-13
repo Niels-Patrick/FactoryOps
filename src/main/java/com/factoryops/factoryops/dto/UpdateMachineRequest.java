@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UpdateMachineRequest {
+	//Properties
 	@NotBlank(message = "Machine name is required")
 	@Size(
 			max = 100,
@@ -45,14 +46,19 @@ public class UpdateMachineRequest {
 	private MachineStatus status;
 	
 	@NotNull(message = "Machine operating hours is required")
-	@Min(0)
+	@Min(
+			value = 0,
+			message = "Machine operating hours cannot be negative"
+			)
 	private Integer operatingHours;
 	
 	
+	// Constructor
 	public UpdateMachineRequest() {
 	}
 
 
+	// Getters and setters
 	public String getName() {
 		return name;
 	}
