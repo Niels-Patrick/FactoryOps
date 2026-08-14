@@ -38,17 +38,17 @@ public class MeasurementService {
 			) {
 		Machine machine = machineRepository.findById(machineId)
 				.orElseThrow(() -> new MachineNotFoundException(machineId));
-		
+
 		Measurement measurement = new Measurement();
-		
+
 		measurement.setMachine(machine);
 		measurement.setMeasurementTimestamp(request.getMeasurementTimestamp());
 		measurement.setTemperature(request.getTemperature());
 		measurement.setVibration(request.getVibration());
 		measurement.setPressure(request.getPressure());
-		
+
 		Measurement savedMeasurement = measurementRepository.save(measurement);
-		
+
 		return mapToResponse(savedMeasurement);
 	}
 	
