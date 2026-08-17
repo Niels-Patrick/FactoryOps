@@ -2,6 +2,7 @@ package com.factoryops.factoryops.dto;
 
 import java.util.UUID;
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 import com.factoryops.factoryops.entity.enums.MachineStatus;
 
@@ -15,6 +16,9 @@ public class MachineResponse {
 	private LocalDate installationDate;
 	private MachineStatus status;
 	private Integer operatingHours;
+	private BigDecimal maxTemperature;
+	private BigDecimal maxVibration;
+	private BigDecimal maxPressure;
 	
 	
 	// Constructor
@@ -85,5 +89,29 @@ public class MachineResponse {
 
 	public void setOperatingHours(Integer operatingHours) {
 		this.operatingHours = operatingHours;
+	}
+
+	public BigDecimal getMaxTemperature() {
+		return maxTemperature;
+	}
+
+	public void setMaxTemperature(BigDecimal maxTemperature) {
+		this.maxTemperature = maxTemperature;
+	}
+
+	public BigDecimal getMaxVibration() {
+		return maxVibration;
+	}
+
+	public void setMaxVibration(BigDecimal maxVibration) {
+		this.maxVibration = maxVibration;
+	}
+
+	public BigDecimal getMaxPressure() {
+		return maxPressure;
+	}
+
+	public void setMaxPressure(BigDecimal maxPressure) {
+		this.maxPressure = maxPressure;
 	}
 }

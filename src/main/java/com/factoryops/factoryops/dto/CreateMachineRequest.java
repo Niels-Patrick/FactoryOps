@@ -1,6 +1,7 @@
 package com.factoryops.factoryops.dto;
 
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 import com.factoryops.factoryops.entity.enums.MachineStatus;
 
@@ -8,6 +9,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.DecimalMin;
 
 public class CreateMachineRequest {
 	// Properties
@@ -51,6 +54,30 @@ public class CreateMachineRequest {
 			message = "Machine operating hours cannot be negative"
 			)
 	private Integer operatingHours;
+	
+	@NotNull(message = "Machine maximum temperature is required")
+	@DecimalMin(
+			value = "0.0",
+			message = "Machine maximum temperature cannot be negative"
+			)
+	@Digits(integer = 8, fraction = 2)
+	private BigDecimal maxTemperature;
+	
+	@NotNull(message = "Machine maximum vibration is required")
+	@DecimalMin(
+			value = "0.0",
+			message = "Machine maximum vibration cannot be negative"
+			)
+	@Digits(integer = 8, fraction = 2)
+	private BigDecimal maxVibration;
+	
+	@NotNull(message = "Machine maximum pressure is required")
+	@DecimalMin(
+			value = "0.0",
+			message = "Machine maximum pressure cannot be negative"
+			)
+	@Digits(integer = 8, fraction = 2)
+	private BigDecimal maxPressure;
 	
 	
 	// Constructor
@@ -113,5 +140,29 @@ public class CreateMachineRequest {
 
 	public void setOperatingHours(Integer operatingHours) {
 		this.operatingHours = operatingHours;
+	}
+
+	public BigDecimal getMaxTemperature() {
+		return maxTemperature;
+	}
+
+	public void setMaxTemperature(BigDecimal maxTemperature) {
+		this.maxTemperature = maxTemperature;
+	}
+
+	public BigDecimal getMaxVibration() {
+		return maxVibration;
+	}
+
+	public void setMaxVibration(BigDecimal maxVibration) {
+		this.maxVibration = maxVibration;
+	}
+
+	public BigDecimal getMaxPressure() {
+		return maxPressure;
+	}
+
+	public void setMaxPressure(BigDecimal maxPressure) {
+		this.maxPressure = maxPressure;
 	}
 }

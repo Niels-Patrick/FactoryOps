@@ -18,12 +18,18 @@ public class CreateMeasurementRequest {
 	
 	@NotNull
 	@Digits(integer = 8, fraction = 2)
-	@DecimalMin(value = "0.0")
+	@DecimalMin(
+			value = "0.0",
+			message = "Measurement vibration cannot be negative"
+			)
 	private BigDecimal vibration;
 	
 	@NotNull
 	@Digits(integer = 8, fraction = 2)
-	@DecimalMin(value = "0.0")
+	@DecimalMin(
+			value = "0.0",
+			message = "Measurement pressure cannot be negative"
+			)
 	private BigDecimal pressure;
 	
 	

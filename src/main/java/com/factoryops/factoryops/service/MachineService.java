@@ -36,6 +36,9 @@ public class MachineService {
 		machine.setInstallationDate(request.getInstallationDate());
 		machine.setStatus(request.getStatus());
 		machine.setOperatingHours(request.getOperatingHours());
+		machine.setMaxTemperature(request.getMaxTemperature());
+		machine.setMaxVibration(request.getMaxVibration());
+		machine.setMaxPressure(request.getMaxPressure());
 		
 		Machine savedMachine = machineRepository.save(machine);
 		
@@ -69,6 +72,9 @@ public class MachineService {
 		machine.setInstallationDate(request.getInstallationDate());
 		machine.setStatus(request.getStatus());
 		machine.setOperatingHours(request.getOperatingHours());
+		machine.setMaxTemperature(request.getMaxTemperature());
+		machine.setMaxVibration(request.getMaxVibration());
+		machine.setMaxPressure(request.getMaxPressure());
 		
 		Machine updatedMachine = machineRepository.save(machine);
 		
@@ -95,6 +101,9 @@ public class MachineService {
 		response.setInstallationDate(machine.getInstallationDate());
 		response.setStatus(machine.getStatus());
 		response.setOperatingHours(machine.getOperatingHours());
+		response.setMaxTemperature(machine.getMaxTemperature());
+		response.setMaxVibration(machine.getMaxVibration());
+		response.setMaxPressure(machine.getMaxPressure());
 		
 		return response;
 	}
