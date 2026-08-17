@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 
 import com.factoryops.factoryops.dto.CreateMeasurementRequest;
 import com.factoryops.factoryops.dto.MeasurementResponse;
+import com.factoryops.factoryops.dto.MeasurementCreationResponse;
 import com.factoryops.factoryops.service.MeasurementService;
 
 import java.util.UUID;
@@ -31,14 +32,17 @@ public class MeasurementController {
 	
 	// Routes
 	@PostMapping
-	public ResponseEntity<MeasurementResponse> createMeasurement(
+	public ResponseEntity<MeasurementCreationResponse> createMeasurement(
 			@PathVariable UUID machineId,
 			@Valid @RequestBody CreateMeasurementRequest request
 			) {
-		MeasurementResponse response = measurementService
+		MeasurementCreationResponse response = measurementService
 				.createMeasurement(machineId, request);
 		
-		URI location = URI.create("/api/measurements/" + response.getId());
+		URI location = URI.create(
+				"/api/measurements/" +
+				response.getMeasurement().getId()
+				);
 		
 		return ResponseEntity
 				.created(location)

@@ -8,9 +8,12 @@ import com.factoryops.factoryops.repository.MachineRepository;
 import com.factoryops.factoryops.repository.MeasurementRepository;
 import com.factoryops.factoryops.dto.CreateMeasurementRequest;
 import com.factoryops.factoryops.dto.MeasurementResponse;
+import com.factoryops.factoryops.dto.MeasurementCreationResponse;
+import com.factoryops.factoryops.dto.ThresholdViolationResponse;
 import com.factoryops.factoryops.entity.Machine;
 import com.factoryops.factoryops.entity.Measurement;
 import com.factoryops.factoryops.exception.MachineNotFoundException;
+import com.factoryops.factoryops.service.MeasurementThresholdService;
 
 import java.util.UUID;
 
@@ -19,20 +22,23 @@ public class MeasurementService {
 	// Properties
 	private final MeasurementRepository measurementRepository;
 	private final MachineRepository machineRepository;
+	private final MeasurementThresholdService measurementThresholdService;
 	
 
 	// Constructor
 	public MeasurementService(
 			MeasurementRepository measurementRepository,
-			MachineRepository machineRepository
+			MachineRepository machineRepository,
+			MeasurementThresholdService measurementThresholdService
 			) {
 		this.measurementRepository = measurementRepository;
 		this.machineRepository = machineRepository;
+		this.measurementThresholdService = measurementThresholdService;
 	}
 	
 	
 	// Public methods
-	public MeasurementResponse createMeasurement(
+	public MeasurementCreationResponse createMeasurement(
 			UUID machineId,
 			CreateMeasurementRequest request
 			) {
@@ -48,8 +54,18 @@ public class MeasurementService {
 		measurement.setPressure(request.getPressure());
 
 		Measurement savedMeasurement = measurementRepository.save(measurement);
+		
+		MeasurementResponse measurementResponse = mapToResponse(savedMeasurement);
+		
+		ThresholdViolationResponse violations = measurementThresholdService
+				.detectViolations(savedMeasurement);
+		
+		MeasurementCreationResponse response = new MeasurementCreationResponse();
+		
+		response.setMeasurement(measurementResponse);
+		response.setViolations(violations);
 
-		return mapToResponse(savedMeasurement);
+		return response;
 	}
 	
 	public Page<MeasurementResponse> getMeasurementsByMachine(
