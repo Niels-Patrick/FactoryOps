@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Min;
 @Entity
 @Table(name = "machines")
 public class Machine {
+	// Properties
 	@Id
 	@GeneratedValue
 	private UUID id;
