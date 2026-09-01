@@ -6,15 +6,19 @@ import org.springframework.data.domain.Pageable;
 
 import com.factoryops.factoryops.repository.MachineRepository;
 import com.factoryops.factoryops.repository.MeasurementRepository;
+import com.factoryops.factoryops.dto.AlertResponse;
 import com.factoryops.factoryops.dto.CreateMeasurementRequest;
 import com.factoryops.factoryops.dto.MeasurementResponse;
 import com.factoryops.factoryops.dto.MeasurementCreationResponse;
 import com.factoryops.factoryops.dto.ThresholdViolationResponse;
+import com.factoryops.factoryops.entity.Alert;
 import com.factoryops.factoryops.entity.Machine;
 import com.factoryops.factoryops.entity.Measurement;
 import com.factoryops.factoryops.exception.MachineNotFoundException;
 import com.factoryops.factoryops.service.MeasurementThresholdService;
+import com.factoryops.factoryops.service.AlertService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,17 +27,20 @@ public class MeasurementService {
 	private final MeasurementRepository measurementRepository;
 	private final MachineRepository machineRepository;
 	private final MeasurementThresholdService measurementThresholdService;
+	private final AlertService alertService;
 	
 
 	// Constructor
 	public MeasurementService(
 			MeasurementRepository measurementRepository,
 			MachineRepository machineRepository,
-			MeasurementThresholdService measurementThresholdService
+			MeasurementThresholdService measurementThresholdService,
+			AlertService alertService
 			) {
 		this.measurementRepository = measurementRepository;
 		this.machineRepository = machineRepository;
 		this.measurementThresholdService = measurementThresholdService;
+		this.alertService = alertService;
 	}
 	
 	
@@ -60,10 +67,18 @@ public class MeasurementService {
 		ThresholdViolationResponse violations = measurementThresholdService
 				.detectViolations(savedMeasurement);
 		
+		List<Alert> alerts = alertService.createAlerts(savedMeasurement, violations);
+		List<AlertResponse> alertResponses = alerts.stream()
+				.map(alertService::mapToResponse)
+				.toList();
+		
+
+		
 		MeasurementCreationResponse response = new MeasurementCreationResponse();
 		
 		response.setMeasurement(measurementResponse);
 		response.setViolations(violations);
+		response.setAlerts(alertResponses);
 
 		return response;
 	}

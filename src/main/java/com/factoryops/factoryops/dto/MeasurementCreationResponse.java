@@ -1,9 +1,12 @@
 package com.factoryops.factoryops.dto;
 
+import java.util.List;
+
 public class MeasurementCreationResponse {
 	// Properties
 	private MeasurementResponse measurement;
 	private ThresholdViolationResponse violations;
+	private List<AlertResponse> alerts;
 
 
 	// Constructor
@@ -26,5 +29,13 @@ public class MeasurementCreationResponse {
 
 	public void setViolations(ThresholdViolationResponse violations) {
 		this.violations = violations;
+	}
+
+	public List<AlertResponse> getAlerts() {
+		return alerts;
+	}
+
+	public void setAlerts(List<AlertResponse> alerts) {
+		this.alerts = alerts;
 	}
 }
