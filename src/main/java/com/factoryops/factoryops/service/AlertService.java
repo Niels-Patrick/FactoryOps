@@ -2,10 +2,13 @@ package com.factoryops.factoryops.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.factoryops.factoryops.repository.AlertRepository;
 import com.factoryops.factoryops.entity.Alert;
@@ -14,6 +17,7 @@ import com.factoryops.factoryops.entity.Machine;
 import com.factoryops.factoryops.entity.enums.AlertType;
 import com.factoryops.factoryops.dto.AlertResponse;
 import com.factoryops.factoryops.dto.ThresholdViolationResponse;
+import com.factoryops.factoryops.exception.AlertNotFoundException;
 
 @Service
 public class AlertService {
@@ -82,6 +86,23 @@ public class AlertService {
 		response.setAcknowledged(alert.getAcknowledged());
 		
 		return response;
+	}
+	
+	public Page<AlertResponse> getActiveAlerts(Pageable pageable) {
+		Page<Alert> alerts = alertRepository.findByAcknowledgedFalse(pageable);
+		
+		return alerts.map(this::mapToResponse);
+	}
+	
+	public AlertResponse acknowledgeAlert(UUID alertId) {
+		Alert alert = alertRepository.findById(alertId)
+				.orElseThrow(() -> new AlertNotFoundException(alertId));
+		
+		alert.setAcknowledged(true);
+		
+		Alert savedAlert = alertRepository.save(alert);
+		
+		return mapToResponse(savedAlert);
 	}
 
 
