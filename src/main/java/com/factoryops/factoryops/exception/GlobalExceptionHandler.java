@@ -72,4 +72,20 @@ public class GlobalExceptionHandler {
 				.status(HttpStatus.NOT_FOUND)
 				.body(response);
 	}
+	
+	@ExceptionHandler(AlertNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleAlertNotFoundException(
+			AlertNotFoundException exception
+			) {
+		ErrorResponse response = new ErrorResponse(
+				HttpStatus.NOT_FOUND.value(),
+				exception.getMessage(),
+				LocalDateTime.now(),
+				null
+				);
+		
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(response);
+	}
 }

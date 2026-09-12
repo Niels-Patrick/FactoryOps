@@ -88,8 +88,16 @@ public class AlertService {
 		return response;
 	}
 	
-	public Page<AlertResponse> getActiveAlerts(Pageable pageable) {
-		Page<Alert> alerts = alertRepository.findByAcknowledgedFalse(pageable);
+	public Page<AlertResponse> getActiveAlerts(
+			UUID machineId,
+			AlertType alertType,
+			Pageable pageable
+			) {
+		Page<Alert> alerts = alertRepository.findActiveAlerts(
+				machineId,
+				alertType,
+				pageable
+				);
 		
 		return alerts.map(this::mapToResponse);
 	}
@@ -103,6 +111,13 @@ public class AlertService {
 		Alert savedAlert = alertRepository.save(alert);
 		
 		return mapToResponse(savedAlert);
+	}
+	
+	public AlertResponse getAlert(UUID alertId) {
+		Alert alert = alertRepository.findById(alertId)
+				.orElseThrow(() -> new AlertNotFoundException(alertId));
+		
+		return mapToResponse(alert);
 	}
 
 
